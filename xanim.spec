@@ -3,8 +3,8 @@ Summary(pl):	Przegl±darka do ró¿nych formatów animacji
 Name:		xanim
 Version:	2801
 Release:	2
-License:	Free for non-commercial distribution
 Epoch:		1
+License:	Free for non-commercial distribution
 Group:		X11/Applications/Graphics
 # 2801 at http://smurfland.cit.buffalo.edu/xanim/files/
 # new version at ftp://ftp.ayamura.org/pub/graphics/xanim2920.tar.gz
@@ -57,7 +57,8 @@ Przegl±darka do ró¿nych formatów animacji, w tym QuickTime i FLiC.
 %build
 xmkmf -a
 ln -sf  docs/xanim.man .
-%{__make} CDEBUGFLAGS="%{rpmcflags}"
+%{__make} \
+	CDEBUGFLAGS="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
