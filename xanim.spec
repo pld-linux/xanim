@@ -6,8 +6,6 @@ Release:	2
 License:	Free for Non-commercial distribution
 Epoch:		1
 Group:		X11/Applications/Graphics
-Group(de):	X11/Applikationen/Grafik
-Group(pl):	X11/Aplikacje/Grafika
 Source0:	ftp://xanim.va.pubnix.com/%{name}%{version}.tar.gz
 Source1:	ftp://xanim.va.pubnix.com/dlls/vid_cvid_2.0_linuxELFx86g21.tgz
 Source2:	ftp://xanim.va.pubnix.com/dlls/vid_cyuv_1.0_linuxELFx86g21.tgz
