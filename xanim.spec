@@ -1,44 +1,71 @@
 Summary: 	Viewer for various animated graphic formats
 Name: 		xanim
-Version: 	2800
+Version: 	2801
 Release: 	1
 Copyright: 	Free for Non-commercial distribution
 Group: 		X11/Applications/Graphics
-Source0: 	ftp://xanim.va.pubnix.com/xanim2800.tar.gz
-Source1: 	ftp://xanim.va.pubnix.com/modules/xa1.0_cyuv_linuxELF.o.Z
-Source2: 	ftp://xanim.va.pubnix.com/modules/xa2.0_cvid_linuxELF.o.Z
-Source3: 	ftp://xanim.va.pubnix.com/modules/xa2.0_iv32_linuxELF.o.Z
-#Patch0: patch-xanim27070-ppro-nonfree
+Source0: 	ftp://xanim.va.pubnix.com/%{name}%{version}.tar.gz
+Source1:	ftp://xanim.va.pubnix.com/dlls/vid_cvid_2.0_linuxELFx86g21.tgz
+Source2:	ftp://xanim.va.pubnix.com/dlls/vid_cyuv_1.0_linuxELFx86g21.tgz
+Source3:	ftp://xanim.va.pubnix.com/dlls/vid_h261_1.0_linuxELFx86g21.tgz
+Source4:	ftp://xanim.va.pubnix.com/dlls/vid_h263_1.0_linuxELFx86g21.tgz
+Source5:	ftp://xanim.va.pubnix.com/dlls/vid_iv32_2.1_linuxELFx86g21.tgz
+Source6:	ftp://xanim.va.pubnix.com/dlls/vid_iv41_1.0_linuxELFx86g21.tgz
+Source7:	ftp://xanim.va.pubnix.com/dlls/vid_iv50_1.0_linuxELFx86g21.tgz
+Patch0:		xanim-modsdir.patch
+Patch1:		xanim-include.patch
 URL: 		http://xanim.va.pubnix.com/home.html
 BuildRoot:	/tmp/%{name}-%{version}-root
+
+%define		_prefix		/usr/X11R6
+%define		_mandir		/usr/X11R6/man
 
 %description
 Viewer for various animated graphic formats, including QuickTime and FLiC.
 Compiled for Intel 686 chips on Linux
 
 %prep
-#%setup -b 0 -q -n xanim27070
-%setup -q -n %{name}%{version} 
-gunzip <%{SOURCE1}
-#%patch0 -p1
+%setup -q -n %{name}%{version}
+%setup -q -c -T -D -b 1 -n %{name}%{version}
+%setup -q -c -T -D -b 2 -n %{name}%{version}
+%setup -q -c -T -D -b 3 -n %{name}%{version}
+%setup -q -c -T -D -b 4 -n %{name}%{version}
+%setup -q -c -T -D -b 5 -n %{name}%{version}
+%setup -q -c -T -D -b 6 -n %{name}%{version}
+%setup -q -c -T -D -b 7 -n %{name}%{version}
+%patch0 -p1
+%patch1 -p1
 
 %build
-xmkmf
-make 
+xmkmf -a
+make CDEBUGFLAGS="$RPM_OPT_FLAGS"
 
 %install
-install -d ${RPM_BUILD_ROOT}/usr/X11R6/{bin,man/man1}
-install xanim ${RPM_BUILD_ROOT}/usr/X11R6/bin/xanim
-install docs/xanim.man ${RPM_BUILD_ROOT}/usr/X11R6/man/man1/xanim.1x
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/{%{_bindir},%{_mandir}/man1,%{_libdir}/xanim}
+install -s xanim $RPM_BUILD_ROOT/%{_bindir}/xanim
+install -s *.xa $RPM_BUILD_ROOT/%{_libdir}/xanim/
+install docs/xanim.man $RPM_BUILD_ROOT/%{_mandir}/man1/xanim.1x
 
-gzip -9nf ${RPM_BUILD_ROOT}/usr/X11R6/man/man1/*
+gzip -9nf $RPM_BUILD_ROOT/%{_mandir}/man1/* *.readme docs/* README
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(755,root,root) /usr/X11R6/bin/*
-/usr/X11R6/man/man1/*
+%doc *.readme.gz docs/{*.doc,*.readme,README*,proptest.c}.gz
+%attr(755,root,root) %{_bindir}/*
+%dir %{_libdir}/xanim
+%attr(755,root,root) %{_libdir}/%{name}/*
+%{_mandir}/man1/*
 
 %changelog
+* Fri Jul 09 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [2801-1]
+- FHS 2.0
+- more macros
+- added codecs dlls
 
 * Thu Jan 14 1999 Philip Long <plong@mitre.org>
 - Adapted Toshio's work for this i686 package. Much of his flexibility has
