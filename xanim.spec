@@ -2,7 +2,7 @@ Summary:	Viewer for various animated graphic formats
 Summary(pl):	Przegl±darka do ró¿nych formatów animacji
 Name:		xanim
 Version:	2801
-Release:	1
+Release:	2
 License:	Free for Non-commercial distribution
 Epoch:		1
 Group:		X11/Applications/Graphics
@@ -34,21 +34,17 @@ FLiC.
 Przegl±darka do ró¿nych formatów animacji, w tym QuickTime i FLiC.
 
 %prep
-%setup -q -n %{name}%{version}
 %ifarch %{ix86}
-%setup -q -c -T -D -b 1 -n %{name}%{version}
-%setup -q -c -T -D -b 2 -n %{name}%{version}
-%setup -q -c -T -D -b 3 -n %{name}%{version}
-%setup -q -c -T -D -b 4 -n %{name}%{version}
-%setup -q -c -T -D -b 5 -n %{name}%{version}
-%setup -q -c -T -D -b 6 -n %{name}%{version}
-%setup -q -c -T -D -b 7 -n %{name}%{version}
+%setup -q -n %{name}%{version} -a1 -a2 -a3 -a4 -a5 -a6 -a7
+%else
+%setup -q -n %{name}%{version}
 %endif
 %patch0 -p1
 %patch1 -p1
 
 %build
 xmkmf -a
+ln -sf  docs/xanim.man .
 %{__make} CDEBUGFLAGS="%{rpmcflags}"
 
 %install
@@ -57,7 +53,7 @@ install -d $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1,%{_libdir}/xanim}
 
 install xanim $RPM_BUILD_ROOT%{_bindir}/xanim
 %ifarch %{ix86}
-install *.xa $RPM_BUILD_ROOT%{_libdir}/xanim/
+install *.xa $RPM_BUILD_ROOT%{_libdir}/xanim
 %endif
 
 install docs/xanim.man $RPM_BUILD_ROOT%{_mandir}/man1/xanim.1x
