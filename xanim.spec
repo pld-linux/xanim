@@ -59,35 +59,3 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_libdir}/xanim
 %attr(755,root,root) %{_libdir}/%{name}/*
 %{_mandir}/man1/*
-
-%changelog
-* Fri Jul 09 1999 Jan Rêkorajski <baggins@pld.org.pl>
-  [2801-1]
-- FHS 2.0
-- more macros
-- added codecs dlls
-
-* Thu Jan 14 1999 Philip Long <plong@mitre.org>
-- Adapted Toshio's work for this i686 package. Much of his flexibility has
-  been stripped for simplicity.
-- This version is very 686 specific due to lack of ./configure
-  i.e. -O6 -march=pentiumpro for pgcc-1.1.1
-- This version also assumes new linux sound
-
-* Fri Jan 30 1998 Toshio Kuratomi <badger@prtr-13.ucsc.edu>
-
-- Now made with a buildroot!
-- Added support for the Radius Cinepak, Intel Indeo, and Creative
-  CYUV decompressors.  Because of the licensing, these compressors are
-  included as nosrc.  Please note:  I think the cinepak license is such
-  that it could be included in the srpm, but I'm not certain so it isn't
-  here.
-- Made the redhat provided patch0 for linux only.  When someone else builds
-  this package, they may have to set up a patch for their OS.
-- Added a URL tag.
-- Added patch to enable X Multibuffering.
-- Upped the optimization levels a bit.
-
-* Fri Aug 22 1997 Erik Troan <ewt@redhat.com>
-
-- built against glibc
