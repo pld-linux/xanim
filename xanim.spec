@@ -35,7 +35,7 @@ gzip -9nf ${RPM_BUILD_ROOT}/usr/X11R6/man/man1/*
 
 %files
 %defattr(644,root,root,755)
-%attr(755, root, root) /usr/X11R6/bin/*
+%attr(755,root,root) /usr/X11R6/bin/*
 /usr/X11R6/man/man1/*
 
 %changelog
