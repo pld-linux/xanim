@@ -1,0 +1,12 @@
+diff -ur xanim2801.orig/Imakefile xanim2801/Imakefile
+--- xanim2801.orig/Imakefile	Sun Mar 21 23:36:26 1999
++++ xanim2801/Imakefile	Fri Jul  9 15:36:53 1999
+@@ -121,7 +121,7 @@
+ XCOMM If you'd like to change the default directory that XAnim searches while
+ XCOMM looking for dlls, then change the directory below.
+ XCOMM
+-XA_DLL_PATH = /usr/local/xanim/mods
++XA_DLL_PATH = /usr/X11R6/lib/xanim
+ 
+ 
+ 
