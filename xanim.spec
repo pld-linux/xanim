@@ -6,7 +6,10 @@ Release:	2
 License:	Free for non-commercial distribution
 Epoch:		1
 Group:		X11/Applications/Graphics
+# 2801 at http://smurfland.cit.buffalo.edu/xanim/files/
+# new version at ftp://ftp.ayamura.org/pub/graphics/xanim2920.tar.gz
 Source0:	ftp://xanim.va.pubnix.com/%{name}%{version}.tar.gz
+# old dlls at http://smurfland.cit.buffalo.edu/xanim/dlls/
 Source1:	ftp://xanim.va.pubnix.com/dlls/vid_cvid_2.0_linuxELFx86g21.tgz
 Source2:	ftp://xanim.va.pubnix.com/dlls/vid_cyuv_1.0_linuxELFx86g21.tgz
 Source3:	ftp://xanim.va.pubnix.com/dlls/vid_h261_1.0_linuxELFx86g21.tgz
@@ -16,9 +19,12 @@ Source6:	ftp://xanim.va.pubnix.com/dlls/vid_iv41_1.0_linuxELFx86g21.tgz
 Source7:	ftp://xanim.va.pubnix.com/dlls/vid_iv50_1.0_linuxELFx86g21.tgz
 Patch0:		%{name}-modsdir.patch
 Patch1:		%{name}-include.patch
-URL:		http://xanim.va.pubnix.com/home.html
-BuildRequires:	zlib-devel
+# NXDOMAIN
+#URL:		http://xanim.va.pubnix.com/home.html
+# old homepage, but working
+URL:		http://smurfland.cit.buffalo.edu/xanim/home.html
 BuildRequires:	XFree86-devel
+BuildRequires:	zlib-devel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
