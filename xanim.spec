@@ -15,7 +15,7 @@ Source7:	ftp://xanim.va.pubnix.com/dlls/vid_iv50_1.0_linuxELFx86g21.tgz
 Patch0:		xanim-modsdir.patch
 Patch1:		xanim-include.patch
 URL: 		http://xanim.va.pubnix.com/home.html
-BuildRoot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_prefix		/usr/X11R6
 %define		_mandir		/usr/X11R6/man
