@@ -40,7 +40,7 @@ Compiled for Intel 686 chips on Linux
 
 %build
 xmkmf -a
-make CDEBUGFLAGS="$RPM_OPT_FLAGS"
+%{__make} CDEBUGFLAGS="$RPM_OPT_FLAGS"
 
 %install
 rm -rf $RPM_BUILD_ROOT
