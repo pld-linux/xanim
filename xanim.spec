@@ -10,7 +10,7 @@ Source2: 	ftp://xanim.va.pubnix.com/modules/xa2.0_cvid_linuxELF.o.Z
 Source3: 	ftp://xanim.va.pubnix.com/modules/xa2.0_iv32_linuxELF.o.Z
 #Patch0: patch-xanim27070-ppro-nonfree
 URL: 		http://xanim.va.pubnix.com/home.html
-BuildRoot: 	/var/tmp/xanim-root
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 Viewer for various animated graphic formats, including QuickTime and FLiC.
