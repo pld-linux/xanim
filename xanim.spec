@@ -1,10 +1,12 @@
 Summary:	Viewer for various animated graphic formats
+Summary(pl):	Przegl±darka do ró¿nych formatów animacji
 Name:		xanim
 Version:	2801
 Release:	1
 License:	Free for Non-commercial distribution
-Serial:		1
+Epoch:		1
 Group:		X11/Applications/Graphics
+Group(de):	X11/Applikationen/Grafik
 Group(pl):	X11/Aplikacje/Grafika
 Source0:	ftp://xanim.va.pubnix.com/%{name}%{version}.tar.gz
 Source1:	ftp://xanim.va.pubnix.com/dlls/vid_cvid_2.0_linuxELFx86g21.tgz
@@ -14,8 +16,8 @@ Source4:	ftp://xanim.va.pubnix.com/dlls/vid_h263_1.0_linuxELFx86g21.tgz
 Source5:	ftp://xanim.va.pubnix.com/dlls/vid_iv32_2.1_linuxELFx86g21.tgz
 Source6:	ftp://xanim.va.pubnix.com/dlls/vid_iv41_1.0_linuxELFx86g21.tgz
 Source7:	ftp://xanim.va.pubnix.com/dlls/vid_iv50_1.0_linuxELFx86g21.tgz
-Patch0:		xanim-modsdir.patch
-Patch1:		xanim-include.patch
+Patch0:		%{name}-modsdir.patch
+Patch1:		%{name}-include.patch
 URL:		http://xanim.va.pubnix.com/home.html
 BuildRequires:	zlib-devel
 BuildRequires:	XFree86-devel
@@ -26,7 +28,10 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Viewer for various animated graphic formats, including QuickTime and
-FLiC. Compiled for Intel 686 chips on Linux
+FLiC.
+
+%description -l pl
+Przegl±darka do ró¿nych formatów animacji, w tym QuickTime i FLiC.
 
 %prep
 %setup -q -n %{name}%{version}
@@ -44,15 +49,15 @@ FLiC. Compiled for Intel 686 chips on Linux
 
 %build
 xmkmf -a
-%{__make} CDEBUGFLAGS="$RPM_OPT_FLAGS"
+%{__make} CDEBUGFLAGS="%{rpmcflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_bindir},%{_mandir}/man1,%{_libdir}/xanim}
 
-install -s xanim $RPM_BUILD_ROOT%{_bindir}/xanim
+install xanim $RPM_BUILD_ROOT%{_bindir}/xanim
 %ifarch %{ix86}
-install -s *.xa $RPM_BUILD_ROOT%{_libdir}/xanim/
+install *.xa $RPM_BUILD_ROOT%{_libdir}/xanim/
 %endif
 
 install docs/xanim.man $RPM_BUILD_ROOT%{_mandir}/man1/xanim.1x
