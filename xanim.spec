@@ -57,14 +57,14 @@ install -s *.xa $RPM_BUILD_ROOT%{_libdir}/xanim/
 
 install docs/xanim.man $RPM_BUILD_ROOT%{_mandir}/man1/xanim.1x
 
-gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man1/* *.readme docs/* README
+gzip -9nf docs/* README
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.readme.gz docs/{*.doc,*.readme,README*,proptest.c}.gz
+%doc  README.gz docs/{*.doc,*.readme,README*,proptest.c}.gz
 %attr(755,root,root) %{_bindir}/*
 %ifarch %{ix86}
 %dir %{_libdir}/xanim
