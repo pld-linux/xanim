@@ -3,7 +3,7 @@ Summary(pl):	Przegl±darka do ró¿nych formatów animacji
 Name:		xanim
 Version:	2801
 Release:	2
-License:	Free for Non-commercial distribution
+License:	Free for non-commercial distribution
 Epoch:		1
 Group:		X11/Applications/Graphics
 Source0:	ftp://xanim.va.pubnix.com/%{name}%{version}.tar.gz
