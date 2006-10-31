@@ -1,0 +1,146 @@
+extracted from xanim2801c patch from 3ivx.com, adapted for xanim 2920
+--- xanim2920/xa_qt.c.orig	2002-07-10 03:31:32.000000000 +0200
++++ xanim2920/xa_qt.c	2006-10-31 20:44:53.719423750 +0100
+@@ -117,6 +117,7 @@
+ void QT_Read_STTS();
+ void QT_Read_STSS();
+ void QT_Read_STCO();
++void QT_Read_CO64();
+ void QT_Read_STSZ();
+ void QT_Read_STSC();
+ void QT_Read_STGS();
+@@ -529,6 +530,14 @@
+     len = xin->Read_MSB_U32(xin);
+     id  = xin->Read_MSB_U32(xin);
+ 
++    if (len==1) {
++      if (xin->Read_MSB_U32(xin)!=0) {
++	fprintf(stdout,"QT: atom too big (must be < 4Go).\n");
++	return(xaFALSE);
++      }
++      len = xin->Read_MSB_U32(xin) - 8;
++    }
++
+ /* if (xa_verbose) */
+ DEBUG_LEVEL1 
+ 	fprintf(stdout,"%c%c%c%c %04x len = %x file_len =  %x\n",
+@@ -635,6 +644,12 @@
+ 	else xin->Seek_FPos(xin,(len-8),1);
+ 	file_len -= len;
+ 	break;
++      case QT_co64:
++	if (qt_v_flag) QT_Read_CO64(xin,&qtv_chunkoff_num,&qtv_chunkoffs);
++	else if (qt_s_flag) QT_Read_CO64(xin,&qts_chunkoff_num,&qts_chunkoffs);
++	else xin->Seek_FPos(xin,(len-8),1);
++	file_len -= len;
++	break;
+       case QT_stsz:
+ 	if (qt_v_flag) QT_Read_STSZ(xin,len,&qtv_samp_num,&qtv_samp_sizes);
+ 	else if (qt_s_flag) 
+@@ -877,8 +892,9 @@
+     {
+       file_len = 0;
+       if ((qt_moov_flag == xaFALSE) && (qt_data_flag == xaTRUE))
+-      { fprintf(stdout,"QT: file possibly truncated or missing .rsrc info.\n");
+-	return(xaFALSE);
++      { 
++	fprintf(stdout,"QT: file possibly truncated or missing .rsrc info.\n");
++	return(xaFALSE); 
+       }
+     }
+     else if (file_len <= 0)
+@@ -1500,15 +1516,18 @@
+ xaLONG len;
+ xaULONG *qt_samp_num,**qt_samp_sizes;
+ {
+-  xaULONG version,samp_size,num,i,cur;
++  xaULONG version,samp_size,flags,num,i,cur;
+   xaULONG samp_num   = *qt_samp_num;
+   xaULONG *samp_sizes = *qt_samp_sizes;
+ 
+-  version	= xin->Read_MSB_U32(xin);
++  version	= xin->Read_U8(xin);
++  flags         = xin->Read_U8(xin)<<16;
++  flags         |= xin->Read_U8(xin)<<8;
++  flags         |= xin->Read_U8(xin);
+   samp_size	= xin->Read_MSB_U32(xin);
+   num		= xin->Read_MSB_U32(xin);
+   len = (len - 20) / 4;   /* number of stored samples */
+-  DEBUG_LEVEL2 fprintf(stdout,"    ver=%x samp_size=%x entries= %x stored entries=%x\n",version,samp_size,num,len);
++  DEBUG_LEVEL2 fprintf(stdout,"    ver=%x flags=%x samp_size=%x entries=%x stored entries=%x\n",version,flags,samp_size,num,len);
+ 
+ #ifdef NO_MORE
+   if (samp_size == 1) num = 1; /* for AUDIO PODNOTE: rethink this */
+@@ -1520,7 +1539,7 @@
+   if (len < num) num = len;
+   if (num == 0) num = 1;
+ 
+-  if (samp_sizes == 0)
++  if (samp_size == 0)
+   {
+     samp_num = num;
+     samp_sizes = (xaULONG *)malloc(num * sizeof(xaULONG));
+@@ -1588,6 +1607,52 @@
+  }
+ }
+ 
++/* 64-bits chunk Offset */
++void QT_Read_CO64(xin,qt_chunkoff_num,qt_chunkoffs)
++XA_INPUT *xin;
++xaULONG *qt_chunkoff_num;
++xaULONG **qt_chunkoffs;
++{
++  xaULONG version,num,i,cur;
++  xaULONG chunkoff_num = *qt_chunkoff_num;
++  xaULONG *chunkoffs = *qt_chunkoffs;
++
++  version	= xin->Read_MSB_U32(xin);
++  num		= xin->Read_MSB_U32(xin);
++  DEBUG_LEVEL2 fprintf(stdout,"    ver=%x entries= %x\n",version,num);
++  if (chunkoffs == 0)
++  {
++    chunkoff_num = num;
++    chunkoffs = (xaULONG *)malloc(num * sizeof(xaULONG) );
++    cur = 0;
++  }
++  else
++  {
++    xaULONG *tchunks;
++    tchunks = (xaULONG *)malloc((chunkoff_num + num) * sizeof(xaULONG));
++    if (tchunks == 0) {fprintf(stdout,"malloc err 0\n"); TheEnd();}
++    for(i=0; i<chunkoff_num; i++) tchunks[i] = chunkoffs[i];
++    cur = chunkoff_num;
++    chunkoff_num += num;
++    FREE(chunkoffs,0x9011);
++    chunkoffs = tchunks;
++  }
++  for(i=0;i<num;i++) {
++    if (xin->Read_MSB_U32(xin)!=0)
++      { 
++	fprintf(stdout,"QT: This file uses 64-bits chunck offset >4Go.\n"); 
++	TheEnd(); 
++      }
++    chunkoffs[cur] = xin->Read_MSB_U32(xin); cur++; 
++  }
++  *qt_chunkoff_num = chunkoff_num;
++  *qt_chunkoffs = chunkoffs;
++ DEBUG_LEVEL2
++ { for(i=0;i<num;i++)  fprintf(stdout,"  CO64 %d) %x\n",i,
++		chunkoffs[ i ]); 
++ }
++}
++
+ 
+ 
+ xaULONG QT_Read_Video_Data(qt,xin,anim_hdr)
+diff -r -u -P xanim2801/xa_qt.h xanim2801c/xa_qt.h
+--- xanim2801/xa_qt.h	Sun Mar 21 23:36:26 1999
++++ xanim2801c/xa_qt.h	Mon Mar 19 21:56:48 2001
+@@ -42,6 +42,7 @@
+ #define QT_stsc 0x73747363
+ #define QT_stsz 0x7374737a
+ #define QT_stco 0x7374636f
++#define QT_co64 0x636f3634
+ /*-------------- VIDEO CODECS ---------------*/
+ #define QT_rle   0x726c6520
+ #define QT_smc   0x736D6320
