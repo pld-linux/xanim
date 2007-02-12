@@ -1,5 +1,5 @@
 Summary:	Viewer for various animated graphic formats
-Summary(pl.UTF-8):   Przeglądarka do różnych formatów animacji
+Summary(pl.UTF-8):	Przeglądarka do różnych formatów animacji
 Name:		xanim
 Version:	2920
 Release:	1
