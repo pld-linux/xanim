@@ -1,5 +1,5 @@
 Summary:	Viewer for various animated graphic formats
-Summary(pl):	Przegl眃arka do r罂nych format體 animacji
+Summary(pl.UTF-8):   Przegl膮darka do r贸偶nych format贸w animacji
 Name:		xanim
 Version:	2920
 Release:	1
@@ -25,8 +25,8 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Viewer for various animated graphic formats, including QuickTime and
 FLiC.
 
-%description -l pl
-Przegl眃arka do r罂nych format體 animacji, w tym QuickTime i FLiC.
+%description -l pl.UTF-8
+Przegl膮darka do r贸偶nych format贸w animacji, w tym QuickTime i FLiC.
 
 %prep
 %setup -q -n %{name}%{version}
