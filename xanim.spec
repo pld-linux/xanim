@@ -30,9 +30,9 @@ Przeglądarka do różnych formatów animacji, w tym QuickTime i FLiC.
 
 %prep
 %setup -q -n %{name}%{version}
-%patch0 -p1
-%patch1 -p1
-%patch2 -p1
+%patch -P0 -p1
+%patch -P1 -p1
+%patch -P2 -p1
 
 %build
 xmkmf -a
